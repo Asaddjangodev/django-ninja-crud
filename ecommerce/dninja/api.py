@@ -4,6 +4,7 @@ from ninja import NinjaAPI
 from .schema import CategorySchema, ProductSchema
 from ecommerce.inventory.models import Category, Product
 from typing import List
+from django.shortcuts import get_object_or_404
 
 api = NinjaAPI()
 
@@ -31,3 +32,18 @@ def get_category_list(request):
 def get_products_by_category(request, category_slug: str):
     qs = Product.objects.filter(category__slug=category_slug)
     return qs
+
+@api.put("/inventory/category/{category_id}")
+def update_category(request, category_id: int, payload: CategorySchema):
+    category = get_object_or_404(Category, id=category_id)
+    for attr, value in payload.dict().items():
+        if value:
+            setattr(category, attr, value)
+        category.save()
+        return {'Success!': True}
+
+@api.delete("/category/{cat_id}")
+def delete_category(request, cat_id: int):
+    category = get_object_or_404(Category, id=cat_id)
+    category.delete()
+    return {"Success": True}
