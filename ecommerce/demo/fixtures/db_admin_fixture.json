@@ -8,7 +8,7 @@
       "email": "a@a.com",
       "is_superuser": true,
       "is_staff": true,
-      "is_active":  true,
+      "is_active":  true
     }
   }
 ]
