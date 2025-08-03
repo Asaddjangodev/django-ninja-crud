@@ -1,10 +1,11 @@
 from http.client import responses
 
-from ninja import NinjaAPI
+from ninja import NinjaAPI, Form
 from .schema import CategorySchema, ProductSchema
 from ecommerce.inventory.models import Category, Product
 from typing import List
 from django.shortcuts import get_object_or_404
+
 
 api = NinjaAPI()
 
@@ -47,3 +48,9 @@ def delete_category(request, cat_id: int):
     category = get_object_or_404(Category, id=cat_id)
     category.delete()
     return {"Success": True}
+
+
+@api.post("inventory/category/form/")
+def post_category_form(request, form: CategorySchema=Form(...)):
+    category = Category.objects.create(**form.dict())
+    return {"name": category.name}
