@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from mptt.models import MPTTModel, TreeForeignKey
+import nested_admin
 # Create your models here.
 
 class Category(MPTTModel):
@@ -14,8 +15,8 @@ class Category(MPTTModel):
     )
     parent = TreeForeignKey(
         "self",
-        on_delete=models.PROTECT,
-        related_name='children',
+        on_delete=models.PROTECT, # нельзя удалить родителя, если у него есть дети
+        related_name='children', # доступ к подкатегориям через .children
         null=True,
         blank=True,
     )
@@ -24,7 +25,7 @@ class Category(MPTTModel):
 
     class Meta:
         ordering = ['name']
-        verbose_name_plural = _('catregories')
+        verbose_name_plural = _('categories')
 
     def __str__(self):
         return self.name
@@ -82,4 +83,6 @@ class Media(models.Model):
     updated_at = models.DateTimeField(
         auto_now = True,
     )
+
+
 

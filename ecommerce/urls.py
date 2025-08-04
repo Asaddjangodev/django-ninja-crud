@@ -19,6 +19,9 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    path("grappelli/", include("grappelli.urls")),
     path("admin/", admin.site.urls),
+    path("nested_admin/", include("nested_admin.urls")),
     path('ninja/', include("ecommerce.dninja.urls")),
+    path("inventory/", include("ecommerce.inventory.urls")),
 ]
